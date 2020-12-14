@@ -1,6 +1,7 @@
 from dotenv import load_dotenv
 import os
 import mwclient
+import pandas
 
 load_dotenv()
 
@@ -20,10 +21,12 @@ competition_name = "100Change2020"
 mw_formatted_name = mediawiki_formatted_competition_name(competition_name)
 proposal_data = get_proposals_for_competition(competition_name)
 # 455
-print(len(proposal_data[mw_formatted_name]))
-print()
-# Empower 25 million people with safe water and sanitation
-print(next(filter(lambda p: p["Review Number"] == "6988", proposal_data[mw_formatted_name]))['Project Title'])
-print()
-# All available columns
-print(proposal_data[mw_formatted_name][0].keys())
+# print(len(proposal_data[mw_formatted_name]))
+# print()
+# # Empower 25 million people with safe water and sanitation
+# print(next(filter(lambda p: p["Review Number"] == "6988", proposal_data[mw_formatted_name]))['Project Title'])
+# print()
+# # All available columns
+# print(proposal_data[mw_formatted_name][0].keys())
+
+print(pandas.DataFrame.from_dict(proposal_data[mw_formatted_name][454]))
