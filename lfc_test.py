@@ -26,7 +26,19 @@ proposal_data = get_proposals_for_competition(competition_name)
 # # Empower 25 million people with safe water and sanitation
 # print(next(filter(lambda p: p["Review Number"] == "6988", proposal_data[mw_formatted_name]))['Project Title'])
 # print()
-# # All available columns
-# print(proposal_data[mw_formatted_name][0].keys())
+# # count of all available columns
+# print(len(proposal_data[mw_formatted_name][365].keys()))
 
-print(pandas.DataFrame.from_dict(proposal_data[mw_formatted_name][454]))
+
+def aggregate_submissions_into_dataframe(proposal_data):
+    aggregate_dict = {}
+    for key in proposal_data[0]:
+        aggregate_dict[key] = []
+        for proposal in proposal_data:
+            # go through each proposal, find the value for the key, put it in the list for the key in the dict
+            aggregate_dict[key].append(proposal[key])
+    print(proposal_data[454])
+    return pandas.DataFrame.from_dict(aggregate_dict)
+
+proposals_dataframe = aggregate_submissions_into_dataframe(proposal_data[mw_formatted_name])
+proposals_dataframe.to_csv("data.csv")
