@@ -17,10 +17,6 @@ def get_proposals_for_competition(competition_name):
     proposals = site.api('torquedataconnect', format='json', path='/' + mediawiki_formatted_competition_name(competition_name))
     return proposals
 
-competition_name = "100Change2020"
-mw_formatted_name = mediawiki_formatted_competition_name(competition_name)
-proposal_data = get_proposals_for_competition(competition_name)
-
 def aggregate_submissions_into_dataframe(proposal_data):
     aggregate_dict = {}
     for key in proposal_data[0]:
@@ -28,8 +24,17 @@ def aggregate_submissions_into_dataframe(proposal_data):
         for proposal in proposal_data:
             # go through each proposal, find the value for the key, put it in the list for the key in the dict
             aggregate_dict[key].append(proposal[key])
-    print(proposal_data[454])
     return pandas.DataFrame.from_dict(aggregate_dict)
 
-proposals_dataframe = aggregate_submissions_into_dataframe(proposal_data[mw_formatted_name])
-proposals_dataframe.to_csv("data.csv")
+competitions = ["100Change2017",
+                "100Change2020",
+                "Climate2030",
+                "ECW2020",
+                "EO2020",
+                "LLIIA2020",
+                "LoneStar2020"]
+for competition_name in competitions:
+    mw_formatted_name = mediawiki_formatted_competition_name(competition_name)
+    proposal_data = get_proposals_for_competition(competition_name)
+    proposals_dataframe = aggregate_submissions_into_dataframe(proposal_data[mw_formatted_name])
+    proposals_dataframe.to_csv(competition_name + ".csv")
